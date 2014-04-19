@@ -33,6 +33,5 @@ class runit (
     basedir => $basedir,
     home    => $home,
   }
-  $config = hiera_hash('runit::users', $users)
-  create_resources('runit::user', $config, $defaults)
+  create_resources('runit::user', $users, $defaults)
 }
