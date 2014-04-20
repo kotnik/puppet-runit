@@ -42,6 +42,14 @@ define runit::service  (
     group   => $_group,
     require => File["${_basedir}/runit"],
   }
+  file { "${_basedir}/runit/${service}/run":
+    ensure  => present,
+    mode    => '0750',
+    owner   => $user,
+    group   => $_group,
+    content => template('runit/service/run.erb'),
+    require => File["${_basedir}/runit/${service}/log"],
+  }
   if $down {
     file { "${_basedir}/runit/${service}/down":
       ensure  => present,
