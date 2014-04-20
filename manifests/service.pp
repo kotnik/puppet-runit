@@ -76,6 +76,12 @@ define runit::service  (
     replace => false,
     require => File["${_basedir}/runit/${service}/log"],
   }
+  file { "${service_logdir}":
+    ensure  => directory,
+    mode    => '0750',
+    owner   => $user,
+    group   => $_group,
+  }
   file { "${service_logdir}/config":
     ensure  => present,
     mode    => '0440',
@@ -83,6 +89,7 @@ define runit::service  (
     group   => $_group,
     content => template('runit/service/log_config.erb'),
     replace => false,
-    require => File["${_basedir}/runit/${service}/log"],
+    require => [ File["${_basedir}/runit/${service}/log"],
+                 File["${service_logdir}"] ],
   }
 }
